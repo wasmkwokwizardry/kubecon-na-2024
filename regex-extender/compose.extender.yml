@@ -1,0 +1,7 @@
+services:
+  extender:
+    build: .
+    container_name: simulator-extender
+    restart: always
+    networks:
+      - simulator-internal-network

@@ -1,0 +1,26 @@
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
+
+output:
+  print-issued-lines: true
+  sort-results: true
+
+linters:
+  disable-all: true
+  enable:
+    - unused
+    - goimports
+    - ineffassign
+    - misspell
+    - errcheck
+    - govet
+    - gosimple
+    - staticcheck
+    - lll
+
+linters-settings:
+  goimports:
+    local-prefixes: github.com/wasmkwokwizardry/wasm-extension-regex-plugin
+  lll:
+    line-length: 150

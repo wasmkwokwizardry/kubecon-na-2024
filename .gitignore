@@ -7,6 +7,10 @@
 *.dll
 *.so
 *.dylib
+scheduling-framework-regex-plugin/bin
+
+# IDE-related files
+.idea
 
 # Test binary, built with `go test -c`
 *.test
