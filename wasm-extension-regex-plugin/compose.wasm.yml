@@ -4,6 +4,6 @@ services:
     container_name: simulator-static-webserver
     restart: always
     volumes:
-      - ./static:/usr/share/nginx/html
+      - ../wasm-extension-regex-plugin/static:/usr/share/nginx/html
     networks:
       - simulator-internal-network
