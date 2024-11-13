@@ -12,11 +12,13 @@ async def filter(request: Request):
 
     # Check if the regex pattern is provided in the Pod annotations
     try:
-        pattern = data["Pod"]["metadata"]["annotations"]["scheduler.wasmkwokwizardry.io/regex"]
+        pattern = data["Pod"]["metadata"]["annotations"][
+            "scheduler.wasmkwokwizardry.io/regex"
+        ]
     except KeyError:
         return JSONResponse(
             content={
-                "Nodes": data["Nodes"],
+                "NodeNames": data["NodeNames"],
             }
         )
 
@@ -34,21 +36,18 @@ async def filter(request: Request):
     nodes = []
     failed_nodes = {}
 
-    for node in data["Nodes"]["items"]:
-        name = node["metadata"]["name"]
+    for name in data["NodeNames"]:
         if regex.search(name) is None:
             failed_nodes[name] = (
                 f"Node {name} does not match the regex pattern {pattern}"
             )
         else:
-            nodes.append(node)
+            nodes.append(name)
 
     # Return the filtered nodes
     return JSONResponse(
         content={
-            "Nodes": {
-                "items": nodes,
-            },
+            "NodeNames": nodes,
             "FailedAndUnresolvableNodes": failed_nodes,
         }
     )

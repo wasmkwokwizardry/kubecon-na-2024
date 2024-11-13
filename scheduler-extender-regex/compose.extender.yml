@@ -1,6 +1,7 @@
 services:
   extender:
-    build: .
+    build:
+      context: ../scheduler-extender-regex
     container_name: simulator-extender
     restart: always
     networks:

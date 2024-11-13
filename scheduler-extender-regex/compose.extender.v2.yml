@@ -1,0 +1,5 @@
+services:
+  extender:
+    build:
+      args:
+        main: regex_v2.py
