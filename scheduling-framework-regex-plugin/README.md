@@ -4,28 +4,38 @@ This is an implementation which uses the [Scheduling Framework](https://github.c
 
 ## How to run
 
-1. Run `make start-simulator-extender` from the project root.
-2. Open the Simulator at [http://localhost:3000](http://localhost:3000) in your browser.
-3. Click the cog icon in the upper-left corner to open the Scheduler configuration and add the following top-level config:
-    ```yaml
-    extenders:
-    - urlPrefix: http://extender:8000/
-      filterVerb: filter
-      weight: 10
+1. Go to the Simulator project by running `cd kube-scheduler-simulator`
+2. Add the `regex.go` file to the `simulator/pkg/plugin/regex` directory
+3. Add the plugin in the debuggable scheduler by editing the `cmd/scheduler/scheduler.go` and changing the following line:
+    ```go
+        import (
+            "github.com/kubernetes-sigs/scheduler-plugins/pkg/plugin/regex"
+        )        
+
+        command, cancelFn, err := debuggablescheduler.NewSchedulerCommand(
+            debuggablescheduler.WithPlugin(regex.Name, regex.New),
+        )
     ```
-4. Create a Node with a default name and additional two Nodes named `kubecon-1` and `kubecon-2`
-5. Create a Pod with an annotation `scheduler.wasmkwokwizardry.io/regex: 'kubecon-.*'`
+4. Build the new Scheduler and run it locally by running the command `make docker_build docker_up_local`
+5. Enable the new Scheduler by editing the `KubeSchedulerConfiguration` from the Simulator UI by adding the following line to the `default-scheduler` profile:
+    ```yaml
+    multiPoint:
+      enabled:  
+      - name: RegexScheduling
+    ```
+6. Create a Node with a default name and additional two Nodes named `kubecon-1` and `kubecon-2`
+7. Create a Pod with an annotation `"scheduler.example.com/regex": "kubecon-.*"`
     ```yaml
     annotations:
-      scheduler.wasmkwokwizardry.io/regex: 'kubecon-.*'
+      scheduler.example.com/regex: "kubecon-.*"
     ```
-6. Add a regex annotation for a non-existing Node Group and show result:
+8. Add a regex annotation for a non-existing Node Group and show result:
     ```yaml
     annotations:
-      scheduler.wasmkwokwizardry.io/regex: 'cncf-.*'
+      scheduler.example.com/regex: "cncf-.*"
     ```
-7. Add an invalid regex annotation and show result:
+9. Add an invalid regex annotation and show result:
     ```yaml
     annotations:
-      scheduler.wasmkwokwizardry.io/regex: 'kubecon-.*\'
+      scheduler.example.com/regex: 'kubecon-.*\'
     ```

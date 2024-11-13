@@ -1,4 +1,4 @@
-module github.com/wasmkwokwizardry/scheduling-framework-regex-plugin
+module github.com/wasmkwokwizardry/kubecon-na-2024/scheduling-framework-regex-plugin
 
 go 1.23.2
 
