@@ -1,6 +1,6 @@
 services:
   extender:
-    build: .
+    build: ../regex-extender
     container_name: simulator-extender
     restart: always
     networks:
