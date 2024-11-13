@@ -2,6 +2,25 @@ compose := cd kube-scheduler-simulator && docker compose -f compose.yml -f compo
 compose_up := up -d --remove-orphans
 compose_down := down --volumes --remove-orphans
 
+##@ General
+
+# The help target prints out all targets with their descriptions organized
+# beneath their categories. The categories are represented by '##@' and the
+# target descriptions by '##'. The awk commands is responsible for reading the
+# entire set of makefiles included in this invocation, looking for lines of the
+# file as xyz: ## something, and then pretty-format the target and help. Then,
+# if there's a line with ##@ something, that gets pretty-printed as a category.
+# More info on the usage of ANSI control characters for terminal formatting:
+# https://en.wikipedia.org/wiki/ANSI_escape_code#SGR_parameters
+# More info on the awk command:
+# http://linuxcommand.org/lc3_adv_awk.php
+
+.PHONY: help
+help: ## Display the help for supported commands.
+	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
+
+##@ Kube Scheduler WASM Extension
+
 .PHONY: start-simulator-wasm
 start-simulator-wasm: simulator-build wasm-build ## Start the Kubernetes Scheduler Simulator and the WASM Extension
 	@$(compose) -f ../wasm-extension-regex-plugin/compose.wasm.yml $(compose_up)
@@ -14,6 +33,8 @@ wasm-build: ## Build the WASM Extension
 stop-simulator-wasm: simulator-submodule ## Stop the Kubernetes Scheduler Simulator and the WASM Extension
 	@$(compose) -f ../wasm-extension-regex-plugin/compose.wasm.yml $(compose_down)
 
+##@ Kube Scheduler Extender
+
 .PHONY: start-simulator-extender
 start-simulator-extender: simulator-build ## Start the Kubernetes Scheduler Simulator and the Regex Extender
 	@$(compose) -f ../scheduler-extender-regex/compose.extender.yml $(compose_up) --build
@@ -21,6 +42,8 @@ start-simulator-extender: simulator-build ## Start the Kubernetes Scheduler Simu
 .PHONY: stop-simulator-extender
 stop-simulator-extender: simulator-submodule ## Stop the Kubernetes Scheduler Simulator and the Regex Extender
 	@$(compose) -f ../scheduler-extender-regex/compose.extender.yml $(compose_down)
+
+##@ Helpers
 
 .PHONY: start-simulator
 start-simulator: simulator-build ## Start the Kubernetes Scheduler Simulator
@@ -35,7 +58,7 @@ simulator-build: simulator-submodule ## Build the Kubernetes Scheduler Simulator
 	@cd kube-scheduler-simulator && make docker_build
 
 .PHONY: simulator-submodule
-simulator-submodule: kube-scheduler-simulator/.git ## Initialize the git simulator-submodule
+simulator-submodule: kube-scheduler-simulator/.git ## Initialize the git kube-scheduler-simulator submodule
 
 kube-scheduler-simulator/.git:
 	@git submodule update --init --recursive kube-scheduler-simulator

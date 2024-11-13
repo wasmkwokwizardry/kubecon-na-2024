@@ -1,6 +1,6 @@
-# Regex Scheduling Plugin implemented as a Scheduler Extender in Python
+# Regex Scheduling Plugin implemented as a Scheduler Framework Plugin in Golang
 
-This is a simple Scheduler Extender implementation in Python.
+This is an implementation which uses the [Scheduling Framework](https://github.com/kubernetes-sigs/scheduler-plugins) implementation in Go.
 
 ## How to run
 

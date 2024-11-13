@@ -22,7 +22,7 @@ const (
 	// Name is the name of the plugin used in the plugin registry and configurations.
 	Name = "RegexScheduling"
 	// RegexAnnotationKey is the key for the pod annotation that defines the regex.
-	RegexAnnotationKey = "scheduler.example.com/regex"
+	RegexAnnotationKey = "scheduler.wasmkwokwizardry.io/regex"
 )
 
 func (r *RegexScheduling) Filter(state api.CycleState, pod proto.Pod, nodeInfo api.NodeInfo) *api.Status {
