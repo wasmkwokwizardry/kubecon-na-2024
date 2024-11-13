@@ -1,0 +1,9 @@
+services:
+  static-webserver:
+    image: nginx:alpine
+    container_name: simulator-static-webserver
+    restart: always
+    volumes:
+      - ./static:/usr/share/nginx/html
+    networks:
+      - simulator-internal-network
