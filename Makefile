@@ -29,19 +29,15 @@ start-simulator-wasm: simulator-build wasm-build ## Start the Kubernetes Schedul
 wasm-build: ## Build the WASM Extension
 	@cd wasm-extension-regex-plugin && make build
 
-.PHONY: stop-simulator-wasm
-stop-simulator-wasm: simulator-submodule ## Stop the Kubernetes Scheduler Simulator and the WASM Extension
-	@$(compose) -f ../wasm-extension-regex-plugin/compose.wasm.yml $(compose_down)
-
 ##@ Kube Scheduler Extender
 
 .PHONY: start-simulator-extender
 start-simulator-extender: simulator-build ## Start the Kubernetes Scheduler Simulator and the Regex Extender
 	@$(compose) -f ../scheduler-extender-regex/compose.extender.yml $(compose_up) --build
 
-.PHONY: stop-simulator-extender
-stop-simulator-extender: simulator-submodule ## Stop the Kubernetes Scheduler Simulator and the Regex Extender
-	@$(compose) -f ../scheduler-extender-regex/compose.extender.yml $(compose_down)
+.PHONY: start-simulator-extender-v2
+start-simulator-extender-v2: simulator-build ## Start the Kubernetes Scheduler Simulator and the Regex Extender
+	@$(compose) -f ../scheduler-extender-regex/compose.extender.yml -f ../scheduler-extender-regex/compose.extender.v2.yml $(compose_up) --build
 
 ##@ Helpers
 
