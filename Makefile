@@ -1,10 +1,10 @@
-compose := docker compose -p kube-scheduler-simulator -f kube-scheduler-simulator/compose.yml -f kube-scheduler-simulator/compose.local.yml
+compose := cd kube-scheduler-simulator && docker compose -f compose.yml -f compose.local.yml
 compose_up := up -d --remove-orphans
 compose_down := down --volumes --remove-orphans
 
 .PHONY: start-simulator-wasm
 start-simulator-wasm: simulator-build wasm-build ## Start the Kubernetes Scheduler Simulator and the WASM Extension
-	@$(compose) -f wasm-extension-regex-plugin/compose.wasm.yml $(compose_up)
+	@$(compose) -f ../wasm-extension-regex-plugin/compose.wasm.yml $(compose_up)
 
 .PHONY: wasm-build
 wasm-build: ## Build the WASM Extension
@@ -12,15 +12,15 @@ wasm-build: ## Build the WASM Extension
 
 .PHONY: stop-simulator-wasm
 stop-simulator-wasm: simulator-submodule ## Stop the Kubernetes Scheduler Simulator and the WASM Extension
-	@$(compose) -f wasm-extension-regex-plugin/compose.wasm.yml $(compose_down)
+	@$(compose) -f ../wasm-extension-regex-plugin/compose.wasm.yml $(compose_down)
 
 .PHONY: start-simulator-extender
 start-simulator-extender: simulator-build ## Start the Kubernetes Scheduler Simulator and the Regex Extender
-	@$(compose) -f regex-extender/compose.extender.yml $(compose_up) --build
+	@$(compose) -f ../scheduler-extender-regex/compose.extender.yml $(compose_up) --build
 
 .PHONY: stop-simulator-extender
 stop-simulator-extender: simulator-submodule ## Stop the Kubernetes Scheduler Simulator and the Regex Extender
-	@$(compose) -f regex-extender/compose.extender.yml $(compose_down)
+	@$(compose) -f ../scheduler-extender-regex/compose.extender.yml $(compose_down)
 
 .PHONY: start-simulator
 start-simulator: simulator-build ## Start the Kubernetes Scheduler Simulator

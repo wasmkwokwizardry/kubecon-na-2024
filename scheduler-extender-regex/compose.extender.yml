@@ -1,6 +1,9 @@
 services:
   extender:
-    build: ../regex-extender
+    build:
+      context: ../scheduler-extender-regex
+      args: 
+        main: regex.py
     container_name: simulator-extender
     restart: always
     networks:
