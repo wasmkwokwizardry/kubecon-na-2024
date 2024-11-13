@@ -1,61 +1,41 @@
-.PHONY: start-simulator-wasm-extension
-start-simulator-wasm-extension: submodules ## Start the Kubernetes Scheduler Simulator and the WASM Extension
+compose := docker compose -p kube-scheduler-simulator -f kube-scheduler-simulator/compose.yml -f kube-scheduler-simulator/compose.local.yml
+compose_up := up -d --remove-orphans
+compose_down := down --volumes --remove-orphans
+
+.PHONY: start-simulator-wasm
+start-simulator-wasm: simulator-build wasm-build ## Start the Kubernetes Scheduler Simulator and the WASM Extension
+	@$(compose) -f wasm-extension-regex-plugin/compose.wasm.yml $(compose_up)
+
+.PHONY: wasm-build
+wasm-build: ## Build the WASM Extension
 	@cd wasm-extension-regex-plugin && make build
-	@cd kube-scheduler-simulator && make docker_build
-	@docker compose										\
-		-p kube-scheduler-simulator						\
-		-f kube-scheduler-simulator/compose.yml			\
-		-f kube-scheduler-simulator/compose.local.yml	\
-		-f wasm-extension-regex-plugin/compose.wasm.yml	\
-		up -d --remove-orphans
 
-.PHONY: stop-simulator-wasm-extension
-stop-simulator-wasm-extension: submodules ## Stop the Kubernetes Scheduler Simulator and the WASM Extension
-	@docker compose										\
-		-p kube-scheduler-simulator						\
-		-f kube-scheduler-simulator/compose.yml			\
-		-f kube-scheduler-simulator/compose.local.yml	\
-		-f wasm-extension-regex-plugin/compose.wasm.yml	\
-		down --volumes --remove-orphans
+.PHONY: stop-simulator-wasm
+stop-simulator-wasm: simulator-submodule ## Stop the Kubernetes Scheduler Simulator and the WASM Extension
+	@$(compose) -f wasm-extension-regex-plugin/compose.wasm.yml $(compose_down)
 
-.PHONY: start-simulator-regex-extender
-start-simulator-regex-extender: submodules ## Start the Kubernetes Scheduler Simulator and the Regex Extender
-	@cd kube-scheduler-simulator && make docker_build
-	@docker compose										\
-		-p kube-scheduler-simulator						\
-		-f kube-scheduler-simulator/compose.yml			\
-		-f kube-scheduler-simulator/compose.local.yml	\
-		-f regex-extender/compose.extender.yml			\
-		up -d --remove-orphans --build
+.PHONY: start-simulator-extender
+start-simulator-extender: simulator-build ## Start the Kubernetes Scheduler Simulator and the Regex Extender
+	@$(compose) -f regex-extender/compose.extender.yml $(compose_up) --build
 
-.PHONY: stop-simulator-regex-extender
-stop-simulator-regex-extender: submodules ## Stop the Kubernetes Scheduler Simulator and the Regex Extender
-	@docker compose										\
-		-p kube-scheduler-simulator						\
-		-f kube-scheduler-simulator/compose.yml			\
-		-f kube-scheduler-simulator/compose.local.yml	\
-		-f regex-extender/compose.extender.yml			\
-		down --volumes --remove-orphans
+.PHONY: stop-simulator-extender
+stop-simulator-extender: simulator-submodule ## Stop the Kubernetes Scheduler Simulator and the Regex Extender
+	@$(compose) -f regex-extender/compose.extender.yml $(compose_down)
 
 .PHONY: start-simulator
-start-simulator: submodules ## Start the Kubernetes Scheduler Simulator
-	@cd kube-scheduler-simulator && make docker_build
-	@docker compose										\
-		-p kube-scheduler-simulator						\
-		-f kube-scheduler-simulator/compose.yml			\
-		-f kube-scheduler-simulator/compose.local.yml	\
-		up -d --remove-orphans
+start-simulator: simulator-build ## Start the Kubernetes Scheduler Simulator
+	@$(compose) $(compose_up)
 
 .PHONY: stop-simulator
-stop-simulator: submodules ## Stop the Kubernetes Scheduler Simulator
-	@docker compose										\
-		-p kube-scheduler-simulator						\
-		-f kube-scheduler-simulator/compose.yml			\
-		-f kube-scheduler-simulator/compose.local.yml	\
-		down --volumes --remove-orphans
+stop-simulator: simulator-submodule ## Stop the Kubernetes Scheduler Simulator
+	@$(compose) $(compose_down)
 
-.PHONY: submodules
-submodules: kube-scheduler-simulator/.git ## Initialize the git submodules
+.PHONY: simulator-build
+simulator-build: simulator-submodule ## Build the Kubernetes Scheduler Simulator
+	@cd kube-scheduler-simulator && make docker_build
+
+.PHONY: simulator-submodule
+simulator-submodule: kube-scheduler-simulator/.git ## Initialize the git simulator-submodule
 
 kube-scheduler-simulator/.git:
 	@git submodule update --init --recursive kube-scheduler-simulator
