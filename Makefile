@@ -22,7 +22,7 @@ help: ## Display the help for supported commands.
 ##@ Kube Scheduler WASM Extension
 
 .PHONY: start-simulator-wasm
-start-simulator-wasm: simulator-build wasm-build ## Start the Kubernetes Scheduler Simulator and the WASM Extension
+start-simulator-wasm: wasm-build simulator-build ## Start the Kubernetes Scheduler Simulator and the WASM Extension
 	@$(compose) -f ../wasm-extension-regex-plugin/compose.wasm.yml $(compose_up)
 
 .PHONY: wasm-build

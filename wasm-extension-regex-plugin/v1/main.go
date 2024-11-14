@@ -5,17 +5,18 @@ package main
 import (
 	"sigs.k8s.io/kube-scheduler-wasm-extension/guest/config"
 	"sigs.k8s.io/kube-scheduler-wasm-extension/guest/klog"
-	"sigs.k8s.io/kube-scheduler-wasm-extension/guest/plugin"
+	pluginapi "sigs.k8s.io/kube-scheduler-wasm-extension/guest/plugin"
 
-	"github.com/wasmkwokwizardry/wasm-extension-regex-plugin/pkg/plugin/regex"
+	"github.com/wasmkwokwizardry/kubecon-na-2024/wasm-extension-regex-plugin/v1/plugin"
 )
 
 // main is compiled to a WebAssembly function named "_start", called by the
 // wasm scheduler plugin during initialization.
 func main() {
-	p, err := regex.New(klog.Get(), config.Get())
+	p, err := plugin.New(klog.Get(), config.Get())
 	if err != nil {
 		panic(err)
 	}
-	plugin.Set(p)
+
+	pluginapi.Set(p)
 }
