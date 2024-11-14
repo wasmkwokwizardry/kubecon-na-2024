@@ -1,6 +1,6 @@
 module github.com/wasmkwokwizardry/kubecon-na-2024/scheduling-framework-regex-plugin
 
-go 1.23.2
+go 1.22.0
 
 replace (
 	k8s.io/api => k8s.io/api v0.30.4
@@ -35,6 +35,7 @@ require (
 	k8s.io/api v0.30.4
 	k8s.io/apimachinery v0.30.4
 	k8s.io/component-base v0.30.4
+	k8s.io/klog/v2 v2.120.1
 	k8s.io/kubernetes v1.30.4
 )
 
@@ -133,7 +134,6 @@ require (
 	k8s.io/controller-manager v0.30.4 // indirect
 	k8s.io/csi-translation-lib v0.0.0 // indirect
 	k8s.io/dynamic-resource-allocation v0.0.0 // indirect
-	k8s.io/klog/v2 v2.120.1 // indirect
 	k8s.io/kms v0.30.4 // indirect
 	k8s.io/kube-openapi v0.0.0-20240228011516-70dd3763d340 // indirect
 	k8s.io/kube-scheduler v0.30.4 // indirect
