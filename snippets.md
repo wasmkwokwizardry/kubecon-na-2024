@@ -2,8 +2,6 @@
 
 ## Extender
 
-### v1
-
 ```yaml
 extenders:
 - urlPrefix: http://extender:8000/
@@ -17,24 +15,14 @@ name: glinda
     scheduler.wasmkwokwizardry.io/regex: 'oz-.*'
 ```
 
-### v2
-
-```yaml
-nodeCacheCapable: true
-```
-
-```yaml
-name: elphaba
-  annotations:
-    scheduler.wasmkwokwizardry.io/regex: 'oz-.*'
-```
-
 ## Framework
-
-### v1
 
 ```sh
 go get github.com/wasmkwokwizardry/kubecon-na-2024/scheduling-framework-regex-plugin
+```
+
+```
+github.com/wasmkwokwizardry/kubecon-na-2024/scheduling-framework-regex-plugin v0.0.0-20241114191727-7386f4e5bea3
 ```
 
 ```go
@@ -43,22 +31,6 @@ regex "github.com/wasmkwokwizardry/kubecon-na-2024/scheduling-framework-regex-pl
 
 ```go
 regex.Name: regex.New,
-```
-
-```yaml
-  - name: RegexScheduling
-```
-
-```yaml
-name: albus
-  annotations:
-    scheduler.wasmkwokwizardry.io/regex: 'phoenix-.*'
-```
-
-### v2
-
-```go
-regex "github.com/wasmkwokwizardry/kubecon-na-2024/scheduling-framework-regex-plugin/v2/plugin"
 ```
 
 ```yaml
@@ -85,7 +57,7 @@ name: sirius
 ```
 
 ```yaml
-name: morrible
+name: elphaba
   annotations:
     scheduler.wasmkwokwizardry.io/regex: 'oz-.*'
 ```
