@@ -18,7 +18,7 @@ Try out the Scheduling Framework in Go implementation by following this [README.
 
 ### Regex Scheduling as a Scheduler Extender
 
-Try out the Python Scheduler Extender in Python implementation by following this [README.md](./regex-extender/README.md).
+Try out the Python Scheduler Extender in Python implementation by following this [README.md](./scheduler-extender-regex/README.md).
 
 ### Regex Scheduling as WASM Extension
 
