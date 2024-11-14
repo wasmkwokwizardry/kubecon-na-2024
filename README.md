@@ -14,12 +14,12 @@ This simulator offers a rich UI that provides valuable insights and observabilit
 
 ### Regex Scheduling as a Scheduling Framework Plugin
 
-Try out the Scheduling Framework in Go implementation by following this [README.md](./scheduling-framework-regex-plugin/README.md).
+Try out the Scheduling Framework in Go implementation by following these [instructions](./scheduling-framework-regex-plugin/README.md).
 
 ### Regex Scheduling as a Scheduler Extender
 
-Try out the Python Scheduler Extender in Python implementation by following this [README.md](./scheduler-extender-regex/README.md).
+Try out the Python Scheduler Extender in Python implementation by following these [instructions](./scheduler-extender-regex/README.md).
 
 ### Regex Scheduling as WASM Extension
 
-Try out the WASM Extension implementation by following this [README.md](./wasm-extension-regex-plugin/README.md).
+Try out the WASM Extension implementation by following these [instructions](./wasm-extension-regex-plugin/README.md).

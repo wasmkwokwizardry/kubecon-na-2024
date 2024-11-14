@@ -9,10 +9,6 @@ import (
 	klog "sigs.k8s.io/kube-scheduler-wasm-extension/guest/klog/api"
 )
 
-func New(klog klog.Klog, jsonConfig []byte) (*RegexScheduling, error) {
-	return &RegexScheduling{klog: klog}, nil
-}
-
 // RegexScheduling is a plugin that schedules pods based on a regex annotation.
 type RegexScheduling struct {
 	klog klog.Klog
@@ -25,6 +21,7 @@ const (
 	regexAnnotationKey = "scheduler.wasmkwokwizardry.io/regex"
 )
 
+// Filter filters out nodes that do not match the regex in the pod annotation, if it is defined, otherwise it returns success.
 func (r *RegexScheduling) Filter(state api.CycleState, pod proto.Pod, nodeInfo api.NodeInfo) *api.Status {
 	r.klog.InfoS("execute Filter on RegexScheduling plugin", "pod", klog.KObj(pod), "node", klog.KObj(nodeInfo.Node()))
 
@@ -46,5 +43,10 @@ func (r *RegexScheduling) Filter(state api.CycleState, pod proto.Pod, nodeInfo a
 	}
 
 	// Otherwise, return an unschedulable status.
-	return &api.Status{Code: api.StatusCodeUnschedulable, Reason: fmt.Sprintf("Node %q does not match regex %q", nodeInfo.Node().GetName(), pattern)}
+	return &api.Status{Code: api.StatusCodeUnschedulable, Reason: fmt.Sprintf("node %q does not match regex %q", nodeInfo.Node().GetName(), pattern)}
+}
+
+// New initializes a new RegexScheduling plugin and returns it.
+func New(klog klog.Klog, jsonConfig []byte) (*RegexScheduling, error) {
+	return &RegexScheduling{klog: klog}, nil
 }

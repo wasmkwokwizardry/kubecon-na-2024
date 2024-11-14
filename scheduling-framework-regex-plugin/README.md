@@ -13,11 +13,13 @@ using its value as a regex pattern to match against the node name.
 If the node name does not match the specified regex,
 the plugin returns an `Unschedulable` status to indicate that the node is not a suitable candidate for scheduling the pod.
 
+The code can be found under the [`v1`](./v1) directory.
+
 ### How to run
 
 1. Go to the Simulator project by running `cd kube-scheduler-simulator/simulator`
 2. Add the new plugin as a dependency by running `go get github.com/wasmkwokwizardry/kubecon-na-2024/scheduling-framework-regex-plugin`
-3. Open [this file](../kube-scheduler-simulator/simulator/scheduler/config/plugin.go) and import the following module: `"github.com/wasmkwokwizardry/kubecon-na-2024/scheduling-framework-regex-plugin/pkg/plugin/regex"`
+3. Open [this file](../kube-scheduler-simulator/simulator/scheduler/config/plugin.go) and import the following module: `regex "github.com/wasmkwokwizardry/kubecon-na-2024/scheduling-framework-regex-plugin/v1/plugin"`
 4. Add the Regex Scheduling plugin to the out-of-tree registry:
     ```go
     var outOfTreeRegistries = runtime.Registry{
@@ -50,9 +52,11 @@ This version adds a `PreFilter` step where it compiles the regex pattern
 and caches it for later use in the `Filter` step.
 This avoids recompiling the regex pattern in each invocation of the `Filter` method for a given pod and available nodes.
 
+The code can be found under the [`v2`](./v2) directory.
+
 ### How to run
 
-1. Open the file `simulator/scheduler/config/plugin.go` and edit import from the previous version: `regex "github.com/wasmkwokwizardry/kubecon-na-2024/scheduling-framework-regex-plugin/pkg/plugin/regex/v2"`
+1. Open the file `simulator/scheduler/config/plugin.go` and edit import from the previous version: `regex "github.com/wasmkwokwizardry/kubecon-na-2024/scheduling-framework-regex-plugin/v2/plugin"`
 2. Restart the Simulator by running `make start-simulator` from the project root.
 3. Open the Simulator at [http://localhost:3000](http://localhost:3000) in your browser.
 4. Click the cog icon in the upper-left corner to open the Scheduler configuration and edit the `plugins` field so it contains the following:
