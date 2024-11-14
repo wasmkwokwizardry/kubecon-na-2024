@@ -6,7 +6,13 @@ and visualized via the [kube-scheduler-simulator](https://github.com/kubernetes-
 
 ## v1
 
-This version is the basic version of the plugin. It gets called via the `Filter` method and receives the pod and node. It checks for the `scheduler.wasmkwokwizardry.io/regex` annotation on the pod and uses its value as a regex to match the node name. If the node name does not match the regex, it returns an `Unschedulable` status to let the scheduler know that the node is not a valid candidate.
+This is the basic version of the plugin. It is triggered by the `Filter` method,
+receiving both the pod and node as parameters.
+
+The plugin checks for the `scheduler.wasmkwokwizardry.io/regex` annotation on the pod,
+using its value as a regex pattern to match against the node name.
+If the node name does not match the specified regex,
+the plugin returns an `Unschedulable` status to indicate that the node is not a suitable candidate for scheduling the pod.
 
 The code can be found under the [`v1`](./v1) directory.
 
