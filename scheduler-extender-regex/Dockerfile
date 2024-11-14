@@ -12,7 +12,7 @@ STOPSIGNAL SIGKILL
 
 ENV PYTHONUNBUFFERED=1
 
-ARG main=regex.py
+ARG main=regex_v1.py
 COPY ${main} .
 
 ENV MAIN=${main}
