@@ -9,18 +9,9 @@ import (
 	klog "sigs.k8s.io/kube-scheduler-wasm-extension/guest/klog/api"
 )
 
-func New(klog klog.Klog, jsonConfig []byte) (*RegexScheduling, error) {
-	return &RegexScheduling{klog: klog}, nil
-}
-
 // RegexScheduling is a plugin that schedules pods based on a regex annotation.
 type RegexScheduling struct {
 	klog klog.Klog
-}
-
-// preFilterState stores the compiled regex.
-type preFilterState struct {
-	regex *regexp.Regexp
 }
 
 const (
@@ -32,6 +23,12 @@ const (
 	preFilterStateKey = "PreFilterRegex" + Name
 )
 
+// preFilterState computed at PreFilter and used at Filter.
+type preFilterState struct {
+	regex *regexp.Regexp
+}
+
+// PreFilter looks for a regex annotation in the pod and stores the compiled version in the state.
 func (r *RegexScheduling) PreFilter(state api.CycleState, pod proto.Pod) (nodeNames []string, status *api.Status) {
 	r.klog.InfoS("execute PreFilter on RegexScheduling plugin", "pod", klog.KObj(pod))
 
@@ -53,6 +50,7 @@ func (r *RegexScheduling) PreFilter(state api.CycleState, pod proto.Pod) (nodeNa
 	return nil, &api.Status{Code: api.StatusCodeSuccess}
 }
 
+// Filter filters out nodes that do not match the regex in the state, if it is defined, otherwise it returns success.
 func (r *RegexScheduling) Filter(state api.CycleState, pod proto.Pod, nodeInfo api.NodeInfo) *api.Status {
 	r.klog.InfoS("execute Filter on RegexScheduling plugin", "pod", klog.KObj(pod), "node", klog.KObj(nodeInfo.Node()))
 
@@ -72,4 +70,9 @@ func (r *RegexScheduling) Filter(state api.CycleState, pod proto.Pod, nodeInfo a
 
 	// Otherwise, return an unschedulable status.
 	return &api.Status{Code: api.StatusCodeUnschedulable, Reason: fmt.Sprintf("node %q does not match regex %q", nodeInfo.Node().GetName(), regex)}
+}
+
+// New initializes a new RegexScheduling plugin and returns it.
+func New(klog klog.Klog, jsonConfig []byte) (*RegexScheduling, error) {
+	return &RegexScheduling{klog: klog}, nil
 }

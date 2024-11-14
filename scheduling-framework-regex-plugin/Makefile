@@ -27,6 +27,9 @@ EXTRA_ARGS=""
 VERSION=$(shell echo $(RELEASE_VERSION) | awk -F - '{print $$2}')
 VERSION:=$(or $(VERSION),v0.0.$(shell date +%Y%m%d))
 
+# PLUGIN_VERSION is the version of the plugin
+PLUGIN_VERSION?=v1
+
 .PHONY: all
 all: build
 
@@ -35,7 +38,7 @@ build: build-scheduler
 
 .PHONY: build-scheduler
 build-scheduler:
-	$(GO_BUILD_ENV) go build -ldflags '-X k8s.io/component-base/version.gitVersion=$(VERSION) -w' -o bin/kube-scheduler cmd/scheduler/main.go
+	$(GO_BUILD_ENV) go build -ldflags '-X k8s.io/component-base/version.gitVersion=$(VERSION) -w' -o bin/kube-scheduler $(PLUGIN_VERSION)/main.go
 
 .PHONY: build-images
 build-images:
