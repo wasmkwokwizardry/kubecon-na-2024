@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/wasmkwokwizardry/scheduling-framework-regex-plugin/pkg/plugin/regex"
+	"github.com/wasmkwokwizardry/kubecon-na-2024/scheduling-framework-regex-plugin/pkg/plugin/regex"
 
 	"k8s.io/component-base/cli"
 	_ "k8s.io/component-base/metrics/prometheus/clientgo" // for rest client metric registration
