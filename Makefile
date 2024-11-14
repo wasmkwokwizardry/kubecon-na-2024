@@ -1,4 +1,4 @@
-compose := cd kube-scheduler-simulator && docker compose -f compose.yml -f compose.local.yml
+compose := cd kube-scheduler-simulator && docker compose -f compose.yml -f compose.local.yml -f ../.customizations/compose.yml
 compose_up := up -d --remove-orphans
 compose_down := down --volumes --remove-orphans
 

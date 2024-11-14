@@ -1,0 +1,6 @@
+services:
+  simulator-cluster:
+    volumes:
+      # This is a patched version of the entrypoint that stops cleanly on SIGTERM.
+      # This won't be necessary anymore once kwok > v0.6.1 is released.
+      - ../.customizations/entrypoint.sh:/entrypoint.sh
