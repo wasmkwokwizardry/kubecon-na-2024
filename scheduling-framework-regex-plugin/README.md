@@ -15,16 +15,16 @@ the plugin returns an `Unschedulable` status to indicate that the node is not a 
 
 ### How to run
 
-1. Go to the Simulator project by running `cd kube-scheduler-simulator`
+1. Go to the Simulator project by running `cd kube-scheduler-simulator/simulator`
 2. Add the new plugin as a dependency by running `go get github.com/wasmkwokwizardry/kubecon-na-2024/scheduling-framework-regex-plugin`
-3. Open the file `simulator/scheduler/config/plugin.go` and import the following module: `"github.com/wasmkwokwizardry/kubecon-na-2024/scheduling-framework-regex-plugin/pkg/plugin/regex"`
+3. Open [this file](../kube-scheduler-simulator/simulator/scheduler/config/plugin.go) and import the following module: `"github.com/wasmkwokwizardry/kubecon-na-2024/scheduling-framework-regex-plugin/pkg/plugin/regex"`
 4. Add the Regex Scheduling plugin to the out-of-tree registry:
     ```go
     var outOfTreeRegistries = runtime.Registry{
         regex.Name: regex.New,
     }
     ```
-5. Run the Simulator by running `make start-simulator` from the project root.
+5. Go back to the project root and run the Simulator by running `make start-simulator`.
 6. Open the Simulator at [http://localhost:3000](http://localhost:3000) in your browser.
 7. Click the cog icon in the upper-left corner to open the Scheduler configuration and edit the `plugins` field so it contains the following:
     ```yaml
