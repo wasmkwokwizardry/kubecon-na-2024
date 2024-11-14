@@ -4,7 +4,19 @@ This is an implementation of the RegexScheduling plugin which gets compiled to W
 and executed through the [kube-scheduler-wasm-extension](https://github.com/kubernetes-sigs/kube-scheduler-wasm-extension) project
 and visualized via the [kube-scheduler-simulator](https://github.com/kubernetes-sigs/kube-scheduler-simulator) project.
 
-## How to run
+## v1
+
+This is the basic version of the plugin. It is triggered by the `Filter` method,
+receiving both the pod and node as parameters.
+
+The plugin checks for the `scheduler.wasmkwokwizardry.io/regex` annotation on the pod,
+using its value as a regex pattern to match against the node name.
+If the node name does not match the specified regex,
+the plugin returns an `Unschedulable` status to indicate that the node is not a suitable candidate for scheduling the pod.
+
+The code can be found under the [`v1`](./v1) directory.
+
+### How to run
 
 1. Run `make start-simulator-wasm` from the project root.
 2. Open the Simulator at [http://localhost:3000](http://localhost:3000) in your browser.
@@ -21,7 +33,7 @@ and visualized via the [kube-scheduler-simulator](https://github.com/kubernetes-
         pluginConfig:
           - name: WasmRegexScheduling
             args:
-              guestURL: http://static-webserver/regex.wasm
+              guestURL: http://static-webserver/regex_v1.wasm
       ```
 4. Create a Node with a default name and additional two Nodes named `kubecon-1` and `kubecon-2`
 5. Create a Pod with an annotation `scheduler.wasmkwokwizardry.io/regex: 'kubecon-.*'`
@@ -34,3 +46,24 @@ and visualized via the [kube-scheduler-simulator](https://github.com/kubernetes-
     annotations:
       scheduler.wasmkwokwizardry.io/regex: 'cncf-.*'
     ```
+
+## v2
+
+This version uses multiple optimizations:
+- It uses the more efficient `nottinygc` garbage collector.
+- It manually configures lifecycle hooks to avoid no-op overhead.
+- It implements the `PreFilter` method to compile the regex once and reuse it for all nodes via the state.
+
+The code can be found under the [`v2`](./v2) directory.
+
+### How to run
+
+1. Open the Simulator at [http://localhost:3000](http://localhost:3000) in your browser.
+2. Click the cog icon in the upper-left corner to open the Scheduler configuration and edit the `guestURL` field to point to the `regex_v2.wasm` file.
+   ```yaml
+    pluginConfig:
+      - name: WasmRegexScheduling
+        args:
+          guestURL: http://static-webserver/regex_v2.wasm
+    ```
+3. Profit!
