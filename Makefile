@@ -39,7 +39,7 @@ start-simulator-extender: simulator-build ## Start the Kubernetes Scheduler Simu
 start-simulator-extender-v2: simulator-build ## Start the Kubernetes Scheduler Simulator and the Regex Extender
 	@$(compose) -f ../scheduler-extender-regex/compose.extender.yml -f ../scheduler-extender-regex/compose.extender.v2.yml $(compose_up) --build
 
-##@ Helpers
+##@ Kube Scheduler Simulator
 
 .PHONY: start-simulator
 start-simulator: simulator-build ## Start the Kubernetes Scheduler Simulator
@@ -48,6 +48,16 @@ start-simulator: simulator-build ## Start the Kubernetes Scheduler Simulator
 .PHONY: stop-simulator
 stop-simulator: simulator-submodule ## Stop the Kubernetes Scheduler Simulator
 	@$(compose) $(compose_down)
+
+.PHONY: reset-simulator
+reset-simulator: ## Reset the Kubernetes Scheduler Simulator state
+	@curl -X PUT http://localhost:1212/api/v1/reset
+
+.PHONY: import-simulator
+import-simulator: reset-simulator ## Import the Kubernetes Scheduler Simulator state
+	@curl http://localhost:1212/api/v1/import --data @.simulator-state/wizards.json -H 'Content-Type: application/json'
+
+##@ Helpers
 
 .PHONY: simulator-build
 simulator-build: simulator-submodule ## Build the Kubernetes Scheduler Simulator
