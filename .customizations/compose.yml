@@ -1,4 +1,7 @@
 services:
+  simulator-server:
+    # We directly send SIGKILL to stop this container, otherwise it will hang.
+    stop_signal: SIGKILL
   simulator-cluster:
     volumes:
       # This is a patched version of the entrypoint that stops cleanly on SIGTERM.
