@@ -50,5 +50,3 @@ func (r *RegexScheduling) Filter(state api.CycleState, pod proto.Pod, nodeInfo a
 func New(klog klog.Klog, jsonConfig []byte) (*RegexScheduling, error) {
 	return &RegexScheduling{klog: klog}, nil
 }
-
-var _ api.FilterPlugin = &RegexScheduling{}
